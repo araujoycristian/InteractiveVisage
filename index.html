@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cara Interactiva Mejorada</title>
     <style>
         body {
             margin: 0;
@@ -12,7 +13,9 @@
             align-items: center;
             justify-content: space-between;
             height: 100vh;
-            background-color: #111;
+            background-color: #1a1a2e;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.5s;
         }
 
         .face-container {
@@ -20,64 +23,85 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
 
         .eye-container {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 40px;
         }
 
         .eye {
             position: relative;
-            width: 30px;
-            height: 30px;
-            background-color: #3498db;
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ff6b00, 0 0 20px #ff6b00, 0 0 30px #ff6b00;
+            box-shadow: 0 0 15px #00aaff, 0 0 30px #00aaff, 0 0 45px #00aaff;
             overflow: hidden;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .pupil {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 25px;
+            height: 25px;
             background-color: #000;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .mouth {
             position: relative;
-            width: 70px;
-            height: 20px;
+            width: 100px;
+            height: 30px;
             background-color: #e74c3c;
             border-radius: 0 0 50% 50%;
-            margin-top: 10px;
-            transition: height 0.2s ease;
+            margin-top: 20px;
+            transition: all 0.3s ease;
         }
 
         .title {
             color: #fff;
-            font-size: 18px;
-            margin-top: 10px;
+            font-size: 24px;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .copyright {
             color: #fff;
-            font-size: 10px;
-            margin-bottom: 10px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
         }
     </style>
-    <title>Interactive Face</title>
 </head>
 <body>
-    <div class="title">Bienvenido a esta cara</div>
+    <div class="title">Bienvenido a esta cara interactiva</div>
     <div class="face-container">
         <div class="eye-container">
             <div class="eye" id="eye1">
@@ -89,50 +113,69 @@
         </div>
         <div class="mouth" id="mouth"></div>
     </div>
+    <div class="controls">
+        <button id="changeColor">Cambiar Color</button>
+        <button id="blink">Parpadear</button>
+    </div>
     <div class="copyright">© Cristian Araujo 2023</div>
     <script>
-        document.addEventListener('mousemove', (e) => {
-            const eye1 = document.getElementById('eye1');
-            const eye2 = document.getElementById('eye2');
-            const pupil1 = document.getElementById('pupil1');
-            const pupil2 = document.getElementById('pupil2');
-            const mouth = document.getElementById('mouth');
+        const eye1 = document.getElementById('eye1');
+        const eye2 = document.getElementById('eye2');
+        const pupil1 = document.getElementById('pupil1');
+        const pupil2 = document.getElementById('pupil2');
+        const mouth = document.getElementById('mouth');
+        const changeColorBtn = document.getElementById('changeColor');
+        const blinkBtn = document.getElementById('blink');
+
+        function updateFace(e) {
             const mouseX = e.clientX;
             const mouseY = e.clientY;
-
             const containerX = window.innerWidth / 2;
             const containerY = window.innerHeight / 2;
 
-            const moveX1 = (mouseX - containerX - 30) * 0.05;
+            // Actualizar posición de los ojos
+            const moveX1 = (mouseX - containerX - 50) * 0.05;
             const moveY1 = (mouseY - containerY) * 0.05;
-
-            const moveX2 = (mouseX - containerX + 30) * 0.05;
+            const moveX2 = (mouseX - containerX + 50) * 0.05;
             const moveY2 = (mouseY - containerY) * 0.05;
 
             eye1.style.transform = `translate(${moveX1}px, ${moveY1}px)`;
             eye2.style.transform = `translate(${moveX2}px, ${moveY2}px)`;
 
-            const deltaX1 = mouseX - (eye1.offsetLeft + eye1.offsetWidth / 2);
-            const deltaY1 = mouseY - (eye1.offsetTop + eye1.offsetHeight / 2);
-            const angle1 = Math.atan2(deltaY1, deltaX1);
-            const distance1 = Math.min(eye1.offsetWidth / 4, eye1.offsetHeight / 4);
-            const pupilMoveX1 = distance1 * Math.cos(angle1);
-            const pupilMoveY1 = distance1 * Math.sin(angle1);
+            // Actualizar posición de las pupilas
+            const eyeRect1 = eye1.getBoundingClientRect();
+            const eyeRect2 = eye2.getBoundingClientRect();
 
-            const deltaX2 = mouseX - (eye2.offsetLeft + eye2.offsetWidth / 2);
-            const deltaY2 = mouseY - (eye2.offsetTop + eye2.offsetHeight / 2);
-            const angle2 = Math.atan2(deltaY2, deltaX2);
-            const distance2 = Math.min(eye2.offsetWidth / 4, eye2.offsetHeight / 4);
-            const pupilMoveX2 = distance2 * Math.cos(angle2);
-            const pupilMoveY2 = distance2 * Math.sin(angle2);
+            const angle1 = Math.atan2(mouseY - eyeRect1.top - eyeRect1.height / 2, mouseX - eyeRect1.left - eyeRect1.width / 2);
+            const angle2 = Math.atan2(mouseY - eyeRect2.top - eyeRect2.height / 2, mouseX - eyeRect2.left - eyeRect2.width / 2);
 
-            pupil1.style.transform = `translate(${pupilMoveX1}px, ${pupilMoveY1}px)`;
-            pupil2.style.transform = `translate(${pupilMoveX2}px, ${pupilMoveY2}px)`;
+            const distance = 10;
+            pupil1.style.transform = `translate(${Math.cos(angle1) * distance}px, ${Math.sin(angle1) * distance}px)`;
+            pupil2.style.transform = `translate(${Math.cos(angle2) * distance}px, ${Math.sin(angle2) * distance}px)`;
 
+            // Actualizar boca
             const moveMouth = (mouseY - containerY) * 0.05;
-            const mouthHeight = Math.max(10, 20 - moveMouth);
+            const mouthHeight = Math.max(15, 30 - moveMouth);
             mouth.style.height = `${mouthHeight}px`;
-        });
+        }
+
+        function changeBackgroundColor() {
+            const randomColor = Math.floor(Math.random()*16777215).toString(16);
+            document.body.style.backgroundColor = "#" + randomColor;
+        }
+
+        function blink() {
+            eye1.style.height = '0px';
+            eye2.style.height = '0px';
+            setTimeout(() => {
+                eye1.style.height = '50px';
+                eye2.style.height = '50px';
+            }, 200);
+        }
+
+        document.addEventListener('mousemove', updateFace);
+        changeColorBtn.addEventListener('click', changeBackgroundColor);
+        blinkBtn.addEventListener('click', blink);
     </script>
 </body>
 </html>
